@@ -1,11 +1,12 @@
 from .MP_Declare_Model import Constraint, MP_delcare_model
 from .Templates.Response import Response
 from pybeamline.sources import xes_log_source_from_file
+from reactivex import operators as ops
+import reactivex
 # Given a log and a model (a set of constraints), return the violations and fulfillments of the model on the log
 def check_log_conformance(log, model: MP_delcare_model):
     viol = dict()
     fulfill = dict()
-
     for trace in log:
 
         if trace not in viol:
@@ -43,7 +44,11 @@ def check_trace_conformance(trace, constraint:Constraint):
 if __name__ == "__main__":
     model = MP_delcare_model.from_xml("pybeamline/algorithms/conformance/MultiperspectiveConformace/dummy_models/model-10-constraints-data.xml")
     file = "pybeamline/algorithms/conformance/MultiperspectiveConformace/dommy_logs/10-acts-25000-traces.xes"
-    log = xes_log_source_from_file(file)
+    log = xes_log_source_from_file(file).pipe(
+        ops.to_list()
+    ).run()
+    log = [[log]]
+    
     viol = dict()
     fulfill = dict()
     
