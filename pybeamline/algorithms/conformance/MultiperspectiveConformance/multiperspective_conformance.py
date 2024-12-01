@@ -1,6 +1,8 @@
 from pybeamline.algorithms.conformance.MultiperspectiveConformance.MP_Declare_Model import Constraint, MP_declare_model
 from pybeamline.algorithms.conformance.MultiperspectiveConformance.Templates.Response import Response
 from pybeamline.algorithms.conformance.MultiperspectiveConformance.Templates.AlternateResponse import Alternate
+from pybeamline.algorithms.conformance.MultiperspectiveConformance.Templates.ChainResponse import Chain
+
 from pybeamline.sources import xes_log_source_from_file
 from reactivex import operators as ops
 from pybeamline.bevent import BEvent
@@ -43,6 +45,8 @@ def check_trace_conformance(trace, constraint:Constraint):
         temp = Response()
     elif (constraint.name[0] == 'alternate'):
         temp = Alternate()
+    elif (constraint.name[0] == 'chain'):
+        temp = Chain()
     else: # not implemented
         raise NotImplementedError
 
