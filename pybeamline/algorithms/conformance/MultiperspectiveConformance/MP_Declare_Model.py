@@ -16,9 +16,9 @@ class Constraint_Condition():
                 return False
         return True
     
-    def phitauBase(minMaxList, a, b):
+    def phitauBase(minMaxList, a, b, ignoreTime=False):
         timeDiff = (b.event_attributes['time:timestamp'] - a.event_attributes['time:timestamp']).total_seconds()
-        return timeDiff >= minMaxList[0] and timeDiff <= minMaxList[1]
+        return (timeDiff >= minMaxList[0] and timeDiff <= minMaxList[1]) or ignoreTime
 
 
     def parse_string_to_constraint_condition(input_string: str):
@@ -43,7 +43,7 @@ class Constraint_Condition():
             phi_a = lambda x: Constraint_Condition.phiBase(A, x)   #int(phi_match.group(1))
             phi_c = lambda x, y: Constraint_Condition.phiBase(A, x) and Constraint_Condition.phiBase(T, y) #int(phi_match.group(2))
             minmaxList = [int(phi_match.group(1)), int(phi_match.group(2))]
-            phi_tau = lambda a,b: Constraint_Condition.phitauBase(minmaxList, a, b)            
+            phi_tau = lambda a,b: Constraint_Condition.phitauBase(minmaxList, a, b, ignoreTime=True)            
             # Create and return the Constraint_Condition object
             return Constraint_Condition(A, T, phi_a, phi_c, phi_tau)
         else:

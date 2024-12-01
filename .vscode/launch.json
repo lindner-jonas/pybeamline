@@ -8,7 +8,7 @@
             "name": "Python Debugger: Module",
             "type": "debugpy",
             "request": "launch",
-            "module": "pybeamline.algorithms.conformance.MultiperspectiveConformance.tests.tests_multiperspective_conformance_main"
+            "module": "pybeamline.algorithms.conformance.MultiperspectiveConformance.multiperspective_conformance"
         }
     ]
 }

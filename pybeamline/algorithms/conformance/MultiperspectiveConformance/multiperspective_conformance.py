@@ -99,7 +99,7 @@ def runPybeamlineModel(log, model):
 
 
 if __name__ == "__main__":
-    model = MP_declare_model.from_xml("pybeamline/algorithms/conformance/MultiperspectiveConformance/test_data/models/model-single-constraint.xml")
-    log = getLogFromFile("pybeamline/algorithms/conformance/MultiperspectiveConformance/test_data/logs/10-acts-trace-completely-fulfill.xes")
+    model = MP_declare_model.from_xml("pybeamline/algorithms/conformance/MultiperspectiveConformance/tests/models/model-from-bridge.xml")
+    log = getLogFromFile("pybeamline/algorithms/conformance/MultiperspectiveConformance/tests/logs/log_from_bridge/extension-log-noisy-4.xes")
     
     viol, fulfill, violcount, fulfillcount = runPybeamlineModel(log, model)
