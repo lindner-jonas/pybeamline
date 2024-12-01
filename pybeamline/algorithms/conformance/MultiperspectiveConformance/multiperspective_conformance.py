@@ -24,9 +24,9 @@ def check_log_conformance(log, model: MP_declare_model):
             viol_res, fulfill_res = check_trace_conformance(trace, constraint)
 
             if (len(viol_res) > 0):
-                violcount += len(viol_res)
+                violcount += 1 
             if (len(fulfill_res) > 0):
-                fulfillcount += len(fulfill_res)
+                fulfillcount += 1
             
             viol[caseid][constraint.id] = list(str(event) for event in viol_res)
 

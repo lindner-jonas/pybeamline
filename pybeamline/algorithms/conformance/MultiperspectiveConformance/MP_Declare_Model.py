@@ -173,7 +173,7 @@ class MP_declare_model:
 
 
 if __name__ == "__main__":
-    model = MP_delcare_model.from_xml("pybeamline/algorithms/conformance/MultiperspectiveConformace/dummy_models/model-10-constraints-data.xml")
+    model = MP_declare_model.from_xml("pybeamline/algorithms/conformance/MultiperspectiveConformace/dummy_models/model-10-constraints-data.xml")
     
     for constraint in model.constraints:
         print(constraint.condition)
