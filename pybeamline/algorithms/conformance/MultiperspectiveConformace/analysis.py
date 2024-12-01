@@ -121,8 +121,6 @@ def average_time_between_events(event_log):
 
     return average_times
 
-# "C:\\Users\\krist\\OneDrive\\Skrivebord\\02242\\pybeamline\\pybeamline\\algorithms\\conformance\\MultiperspectiveConformace\\dommy_logs\\10-acts-25000-traces.xes"
-
 if __name__ == "__main__":
     if len(sys.argv) != 2 and len(sys.argv) != 1:
         print("Usage: python Analysis.py <path_to_xes_file: string> <optional use cache?: boolean>")
