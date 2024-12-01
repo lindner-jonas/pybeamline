@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import re
+from pybeamline.bevent import BEvent
 #from Templates.TemplateProtocol import Template
 
 class Constraint_Condition():
@@ -9,6 +10,16 @@ class Constraint_Condition():
         self.phi_a = phi_a
         self.phi_c = phi_c
         self.phi_tau = phi_tau
+
+    def phiBase(ABase, A : BEvent):
+        if (A.event_attributes['concept:name'] not in ABase['concept:name']):
+                return False
+        return True
+    
+    def phitauBase(minMaxList, a, b, ignoreTime=False):
+        timeDiff = (b.event_attributes['time:timestamp'] - a.event_attributes['time:timestamp']).total_seconds()
+        return (timeDiff >= minMaxList[0] and timeDiff <= minMaxList[1]) or ignoreTime
+
 
     def parse_string_to_constraint_condition(input_string: str):
     # Regular expression patterns to extract A and T
@@ -25,14 +36,14 @@ class Constraint_Condition():
         
         if A_match and T_match and phi_match:
             # Horrible implementation, if there are more than one, but that doesnt apply to our current models in xml
-            A = set()
-            A.add(A_match.group(1))
-            T = set()
-            T.add(T_match.group(1))
-            phi_a = int(phi_match.group(1))
-            phi_c = int(phi_match.group(2))
-            phi_tau = phi_match.group(3)
-            
+            A = {}
+            A['concept:name'] = A_match.group(1)
+            T = {}
+            T['concept:name']  = T_match.group(1)
+            phi_a = lambda x: Constraint_Condition.phiBase(A, x)   #int(phi_match.group(1))
+            phi_c = lambda x, y: Constraint_Condition.phiBase(A, x) and Constraint_Condition.phiBase(T, y) #int(phi_match.group(2))
+            minmaxList = [int(phi_match.group(1)), int(phi_match.group(2))]
+            phi_tau = lambda a,b: Constraint_Condition.phitauBase(minmaxList, a, b, ignoreTime=True)            
             # Create and return the Constraint_Condition object
             return Constraint_Condition(A, T, phi_a, phi_c, phi_tau)
         else:
@@ -55,7 +66,7 @@ class MP_declare_constraintparameter:
         self.name = name
         self.branches = branches
 
-class MP_delcare_model:
+class MP_declare_model:
     def __init__(self, name:str, language:str, activities, constraints) -> None:
         self.name = name
         self.language = language
@@ -163,6 +174,6 @@ class MP_delcare_model:
 
 if __name__ == "__main__":
     model = MP_delcare_model.from_xml("pybeamline/algorithms/conformance/MultiperspectiveConformace/dummy_models/model-10-constraints-data.xml")
-
+    
     for constraint in model.constraints:
         print(constraint.condition)
